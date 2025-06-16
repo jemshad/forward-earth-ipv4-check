@@ -13,25 +13,16 @@ def is_valid_ipv4(ip:str) -> bool:
        return False
 
     for p in parts:
-        if (not p.isdecimal()) or \
-            p.startswith("0") or \
-            0 >= int(p) or \
-            int(p) > 255:
-            return False
-
-    for p in parts:
         # are all digits?
         if not p.isdecimal():
             return False
 
-        # anything starting with zero?
-        if p.startswith("0"):
-            print(f"{p} starts with 0")
+        # more than 1 character and starts with 0?
+        if len(p) > 1 and p.startswith("0"):
             return False
 
         # are they in the range 0 - 255?
-        if 0 >= int(p) or int(p) > 255:
-            print(f"{p} not in the range 0 <-> 255")
+        if int(p) < 0 or int(p) > 255:
             return False
 
     return True
@@ -45,11 +36,12 @@ def test_is_valid_ipv4():
         [1.234, False ],
         ["x.y.z.1", False],
         ["666.123.2.3", False],
-        ["0.0.0.0", False],
+        ["0.0.0.0", True],
         ["1.01.2.0", False],
         ["-1.4.2.3", False],
         ["", False],
-        [0, False]
+        [0, False],
+        ["192.168.0.1", True]
     ]
 
     for t in testdata:
